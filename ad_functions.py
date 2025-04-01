@@ -22,8 +22,8 @@ class ad_functions:
     
     def create_user(self, usercreation):
         global domaincontroller 
-        domaincontroller = "DC=eng,DC=uci,DC=edu"
-        ou = f"OU={usercreation["OU"]},OU=ENG Users"
+        domaincontroller = "DC=uci,DC=edu"
+        ou = f"OU={usercreation["OU"]},OU=Users"
         password = self.random_password()
         command = f"new-aduser -givenname '{usercreation["firstname"]}' -surname {usercreation["lastname"]} -SamAccountName {usercreation["ucnetid"]} -userprincipalname {usercreation["ucnetid"]} -path '{ou},{domaincontroller}'-desc 'account created on {datetime.datetime.now()} {usercreation["description"]}' -AccountPassword (ConvertTo-SecureString {password} -AsPlainText -force) -passThru -name '{usercreation["firstname"]} {usercreation["lastname"]}' -Enabled $True"
         status = f"Get-ADUser -Identity {usercreation["ucnetid"]}"
@@ -35,8 +35,8 @@ class ad_functions:
         return (command, status)
     
     def create_computer(self, computer_name, computer_type):
-        laptop_ou = 'OU=ENG Laptops,DC=eng,DC=uci,DC=edu'
-        computer_ou = 'OU=ENG Computers,DC=eng,DC=uci,DC=edu'
+        laptop_ou = 'OU=Laptops'
+        computer_ou = 'OU=Computers'
         if computer_type == 'Laptop':
             computer_type = laptop_ou
         else:
